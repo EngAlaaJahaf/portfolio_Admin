@@ -351,12 +351,14 @@ width: 100%;
 padding: 0.5rem 1.15rem;
 font-size: 0.9rem;
 border-radius: 10px;
-color: #0b1020;
+background: linear-gradient(135deg, #4338ca, #1d4ed8);
+color: #ffffff;
 }
 .nav-links .nav-cta-item .btn:hover,
 .nav-links .nav-cta-item .btn:active,
 .nav-links .nav-cta-item .btn:focus {
-color: #0b1020;
+background: linear-gradient(135deg, #3730a3, #1e40af);
+color: #ffffff;
 }
 .nav-links .nav-cta-item .btn::after { display: none; }
 .nav-links .nav-cta-item {
