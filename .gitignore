@@ -1,0 +1,42 @@
+# PHP files
+*.php
+!admin/*.php
+!config/*.php
+!includes/*.php
+!index.php
+
+# Uploads (except htaccess)
+/uploads/*
+!/uploads/.htaccess
+!/uploads/projects/.htaccess
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Config with sensitive data (use config.example.php instead)
+config/config.php
+
+# Backup files
+*.bak
+*.backup
+*.sql.gz
+
+# Composer
+/vendor/
+
+# Node modules
+/node_modules/
+
+# Backup / duplicate copies
+/php-portfolio.zip
+/php-portfolio/
