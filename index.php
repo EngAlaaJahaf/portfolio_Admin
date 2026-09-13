@@ -1,7 +1,7 @@
 <?php
 /**
  * ═══════════════════════════════════════════════════════════════
- * الصفحة الرئيسية - النسخة المعدلة
+ * الصفحة الرئيسية - النسخة المعدلة (V2 — DevStation)
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -166,36 +166,100 @@ try {
 require_once 'includes/header.php';
 ?>
 
-    <!-- Hero Section -->
+    <!-- Hero — Developer Workspace -->
     <section class="hero" id="home">
-        <div class="hero-content">
-            <?php if (!empty($personal) && !empty($personal['is_available'])): ?>
-            <div class="hero-badge">
-                <span class="badge-dot"></span>
-                <span><?php echo clean($personal['availability_text'] ?? 'متاح للتوظيف'); ?></span>
-            </div>
-            <?php endif; ?>
-            
-            <h1 class="hero-title">
-                <span class="highlight"><?php echo clean($personal['title'] ?? 'مطور Oracle Apex و Flutter'); ?></span>
-            </h1>
-            <p class="hero-subtitle"><?php echo clean($personal['subtitle'] ?? ''); ?></p>
-            <p class="hero-description"><?php echo clean($personal['description'] ?? ''); ?></p>
-            
-            <?php if (!empty($technologies)): ?>
-            <div class="hero-tech-stack">
-                <?php foreach ($technologies as $tech): ?>
-                <div class="tech-badge" style="border-color: <?php echo clean($tech['color'] ?? '#00d4ff'); ?>40;">
-                    <?php echo getIcon($tech['icon'] ?? 'database'); ?>
-                    <span><?php echo clean($tech['name']); ?></span>
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-grid">
+            <div class="hero-content">
+                <?php if (!empty($personal) && !empty($personal['is_available'])): ?>
+                <div class="hero-badge reveal">
+                    <span class="badge-dot"></span>
+                    <span><?php echo clean($personal['availability_text'] ?? 'متاح للتوظيف'); ?></span>
                 </div>
-                <?php endforeach; ?>
+                <?php endif; ?>
+
+                <h1 class="hero-title reveal">
+                    أنا <span class="highlight"><?php echo clean($personal['name'] ?? ''); ?></span>
+                </h1>
+
+                <?php $heroRole = trim($personal['title'] ?? ''); ?>
+                <?php if ($heroRole !== '' && $heroRole !== '-'): ?>
+                <p class="hero-subtitle reveal"><?php echo clean($heroRole); ?></p>
+                <?php endif; ?>
+
+                <p class="hero-description reveal"><?php echo clean($personal['description'] ?? ''); ?></p>
+
+                <?php if (!empty($technologies)): ?>
+                <div class="hero-tech-stack reveal">
+                    <?php foreach ($technologies as $tech): ?>
+                    <div class="tech-badge" style="border-color: <?php echo clean($tech['color'] ?? '#00d4ff'); ?>40;">
+                        <?php echo getIcon($tech['icon'] ?? 'database'); ?>
+                        <span><?php echo clean($tech['name']); ?></span>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+
+                <div class="hero-cta reveal">
+                    <?php $contactEmail = $personal['email'] ?? ''; ?>
+                    <a href="<?php echo $contactEmail ? 'mailto:' . htmlspecialchars($contactEmail) : '#contact'; ?>" class="btn btn-primary">تواصل معي</a>
+                    <a href="#projects" class="btn btn-secondary">مشاريعي</a>
+                </div>
             </div>
-            <?php endif; ?>
-            
-            <div>
-                <a href="#contact" class="btn btn-primary">تواصل معي</a>
-                <a href="#projects" class="btn btn-secondary">عرض المشاريع</a>
+
+            <div class="hero-card reveal">
+                <div class="hero-card-inner">
+                    <div class="hero-card-body">
+                        <div class="hero-avatar">
+                            <span class="hero-avatar-mark"><?php echo htmlspecialchars(mb_substr($personal['name'] ?? 'م', 0, 1)); ?></span>
+                        </div>
+                        <h2 class="hero-card-name"><?php echo clean($personal['name'] ?? ''); ?></h2>
+                        <p class="hero-card-role"><?php echo clean($personal['title'] ?? ''); ?></p>
+                        <?php if (!empty($personal['location'])): ?>
+                        <span class="hero-card-loc">
+                            <?php echo getIcon('location'); ?>
+                            <?php echo clean($personal['location']); ?>
+                        </span>
+                        <?php endif; ?>
+                        <div class="hero-card-foot">
+                            <span class="hero-card-foot-item">
+                                <span class="badge-dot"></span>
+                                متاح للتوظيف
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card reveal">
+                <div class="stat-value">
+                    <span class="stat-ico"><?php echo getIcon('folder'); ?></span>
+                    <span class="stat-num">+<?php echo intval($projectCount); ?></span>
+                </div>
+                <div class="stat-label">مشروع مكتمل</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-value">
+                    <span class="stat-ico"><?php echo getIcon('database'); ?></span>
+                    <span class="stat-num"><?php echo intval(count($technologies)); ?><span class="stat-carret">+</span></span>
+                </div>
+                <div class="stat-label">تقنية في التشكيلة</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-value">
+                    <span class="stat-ico"><?php echo getIcon('check'); ?></span>
+                    <span class="stat-avail"><span class="badge-dot"></span>متاح للتوظيف</span>
+                </div>
+                <div class="stat-label">حالة التوظيف</div>
+            </div>
+            <div class="stat-card reveal">
+                <div class="stat-value">
+                    <span class="stat-ico"><?php echo getIcon('location'); ?></span>
+                    <span class="stat-loc"><?php echo clean($personal['location'] ?? '—'); ?></span>
+                </div>
+                <div class="stat-label">الموقع</div>
             </div>
         </div>
     </section>
@@ -203,14 +267,16 @@ require_once 'includes/header.php';
     <!-- About Section -->
     <section class="section" id="about">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">نبذة عني</span>
-                <h2 class="section-title">من أنا؟</h2>
+            <div class="section-header reveal">
+                <div class="section-head-row">
+                    <span class="section-num" aria-hidden="true">01</span>
+                    <h2 class="section-title">نبذة عني</h2>
+                </div>
                 <p class="section-subtitle">تعرف على قصتي ورحلتي في عالم التقنية والأمن السيبراني</p>
             </div>
             
             <div class="about-grid">
-                <div class="about-image">
+                <div class="about-image reveal">
                     <div class="about-image-frame">
                         <div class="about-image-inner">
                             <?php 
@@ -232,7 +298,7 @@ require_once 'includes/header.php';
                     </div>
                 </div>
                 
-                <div class="about-content">
+                <div class="about-content reveal">
                     <h3>شغف بالتقنية وأمن المعلومات</h3>
                     <p><?php echo clean($personal['description'] ?? ''); ?></p>
                     
@@ -275,9 +341,11 @@ require_once 'includes/header.php';
     <?php if (!empty($skills)): ?>
     <section class="section" id="skills">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">المهارات التقنية</span>
-                <h2 class="section-title">مهارتي في التطوير</h2>
+            <div class="section-header reveal">
+                <div class="section-head-row">
+                    <span class="section-num" aria-hidden="true">02</span>
+                    <h2 class="section-title">المهارات التقنية</h2>
+                </div>
                 <p class="section-subtitle">مجموعة من المهارات التقنية التي اكتسبتها خلال رحلتي الأكاديمية والعملية</p>
             </div>
             
@@ -287,7 +355,7 @@ require_once 'includes/header.php';
                 $tags = getSkillTags($skill['id']);
                 $progress = getSkillProgress($skill['id']);
                 ?>
-                <div class="skill-card">
+                <div class="skill-card reveal">
                     <div class="skill-header">
                         <div class="skill-icon"><?php echo getIcon($skill['icon'] ?? 'database'); ?></div>
                         <div>
@@ -315,7 +383,7 @@ require_once 'includes/header.php';
                     </div>
                     <?php endforeach; ?>
                     <?php endif; ?>
-                </div>
+                    </div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -324,12 +392,31 @@ require_once 'includes/header.php';
 
     <!-- Projects Section -->
     <?php if (!empty($projects)): ?>
+    <?php
+    $repoTypes = [];
+    foreach ($projects as $rp) {
+        $rt = $rp['project_type'] ?? '';
+        if ($rt !== '' && !in_array($rt, $repoTypes)) $repoTypes[] = $rt;
+    }
+    ?>
     <section class="section" id="projects">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">معرض الأعمال</span>
-                <h2 class="section-title">مشاريعي</h2>
-                <p class="section-subtitle">نماذج من المشاريع التي عملت عليها خلال فترة دراستي وتطبيقاتي العملية</p>
+            <div class="section-header reveal">
+                <div class="section-head-row">
+                    <span class="section-num" aria-hidden="true">03</span>
+                    <h2 class="section-title">مشاريعي</h2>
+                </div>
+                <p class="section-subtitle">أعمال أنجزتها في تطوير الويب وتطبيقات المحمول</p>
+            </div>
+
+            <div class="repo-toolbar reveal">
+                <span class="projects-count">أعرض <strong><?php echo intval(count($projects)); ?></strong> مشاريع</span>
+                <div class="filter-tabs" role="tablist">
+                    <button type="button" class="filter-tab active" data-filter="all">الكل</button>
+                    <?php foreach ($repoTypes as $rt): ?>
+                    <button type="button" class="filter-tab" data-filter="<?php echo htmlspecialchars($rt); ?>"><?php echo clean($rt); ?></button>
+                    <?php endforeach; ?>
+                </div>
             </div>
             
             <div class="projects-grid">
@@ -338,7 +425,7 @@ require_once 'includes/header.php';
                 $techs = getProjectTechnologies($project['id']);
                 $isInProgress = ($project['status'] ?? '') === 'قيد التطوير';
                 ?>
-                <div class="project-card">
+                <div class="project-card reveal" data-category="<?php echo clean($project['project_type'] ?? ''); ?>">
                     <div class="project-image">
                         <?php 
                         $projectImg = $project['image'] ?? '';
@@ -348,23 +435,25 @@ require_once 'includes/header.php';
                         <?php else: ?>
                         <div class="project-placeholder">
                             <?php echo getIcon('folder'); ?>
-                            <p style="margin-top: 0.5rem;"><?php echo clean($project['title']); ?></p>
+                            <span class="ph-type"><?php echo clean($project['project_type'] ?? ''); ?></span>
                         </div>
                         <?php endif; ?>
                     </div>
                     <div class="project-content">
+                        <div class="repo-head">
+                            <h3 class="project-title"><?php echo clean($project['title']); ?></h3>
+                        </div>
                         <div class="project-meta">
                             <span class="project-type"><?php echo clean($project['project_type'] ?? ''); ?></span>
                             <span class="project-status <?php echo $isInProgress ? 'in-progress' : ''; ?>">
                                 <?php echo clean($project['status'] ?? 'مكتمل'); ?>
                             </span>
                         </div>
-                        <h3 class="project-title"><?php echo clean($project['title']); ?></h3>
                         <p class="project-description"><?php echo clean($project['description'] ?? ''); ?></p>
                         <?php if (!empty($techs)): ?>
                         <div class="project-tech">
                             <?php foreach ($techs as $tech): ?>
-                            <span><?php echo clean($tech); ?></span>
+                            <span class="project-tag"><?php echo clean($tech); ?></span>
                             <?php endforeach; ?>
                         </div>
                         <?php endif; ?>
@@ -375,12 +464,12 @@ require_once 'includes/header.php';
                             if (!empty($demoUrl) && $demoUrl !== '#'): 
                             ?>
                             <a href="<?php echo clean($demoUrl); ?>" class="project-link" target="_blank">
-                                <?php echo getIcon('external'); ?> عرض المشروع
+                                <?php echo getIcon('external'); ?><span class="repo-label">عرض</span>
                             </a>
                             <?php endif; ?>
                             <?php if (!empty($repoUrl) && $repoUrl !== '#'): ?>
                             <a href="<?php echo clean($repoUrl); ?>" class="project-link" target="_blank">
-                                <?php echo getIcon('folder'); ?> الكود
+                                <?php echo getIcon('folder'); ?><span class="repo-label">الكود</span>
                             </a>
                             <?php endif; ?>
                         </div>
@@ -396,16 +485,20 @@ require_once 'includes/header.php';
     <?php if (!empty($cybersecurity)): ?>
     <section class="section cyber-section" id="cyber">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">الأمن السيبراني</span>
-                <h2 class="section-title">اهتماماتي في أمن المعلومات</h2>
+            <div class="section-header reveal">
+                <div class="section-head-row">
+                    <span class="section-num" aria-hidden="true">04</span>
+                    <h2 class="section-title">أمان التطبيقات</h2>
+                </div>
                 <p class="section-subtitle">اهتماماتي ومجهودي في مجال الأمن السيبراني وحماية الأنظمة</p>
             </div>
-            
+
             <div class="cyber-features">
                 <?php foreach ($cybersecurity as $item): ?>
-                <div class="cyber-card">
-                    <div class="cyber-icon"><?php echo getIcon($item['icon'] ?? 'shield'); ?></div>
+                <div class="cyber-card reveal">
+                    <div class="cyber-log-top">
+                        <div class="cyber-icon"><?php echo getIcon($item['icon'] ?? 'shield'); ?></div>
+                    </div>
                     <h4><?php echo clean($item['title']); ?></h4>
                     <p><?php echo clean($item['description'] ?? ''); ?></p>
                 </div>
@@ -419,9 +512,11 @@ require_once 'includes/header.php';
     <?php if (!empty($education)): ?>
     <section class="section" id="education">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">المسار الأكاديمي</span>
-                <h2 class="section-title">تعليمي وشهاداتي</h2>
+            <div class="section-header reveal">
+                <div class="section-head-row">
+                    <span class="section-num" aria-hidden="true">05</span>
+                    <h2 class="section-title">التعليم</h2>
+                </div>
                 <p class="section-subtitle">رحلة التعلم والمسار الأكاديمي الذي أتبعته</p>
             </div>
             
@@ -430,7 +525,7 @@ require_once 'includes/header.php';
                 <?php 
                 $achievements = getEducationAchievements($edu['id']);
                 ?>
-                <div class="education-card">
+                <div class="education-card reveal">
                     <div class="education-header">
                         <div class="education-icon"><?php echo getIcon($edu['icon'] ?? 'graduation'); ?></div>
                         <span class="education-period"><?php echo clean($edu['period'] ?? ''); ?></span>
@@ -457,16 +552,18 @@ require_once 'includes/header.php';
     <!-- Contact Section -->
     <section class="section" id="contact">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">تواصل معي</span>
-                <h2 class="section-title">دعنا نتواصل</h2>
-                <p class="section-subtitle">أنا متاح للعمل الحر والمشاريع التعليمية والتعاون المهني</p>
+            <div class="section-header reveal">
+                <div class="section-head-row">
+                    <span class="section-num" aria-hidden="true">06</span>
+                    <h2 class="section-title">تواصل معي</h2>
+                </div>
+                <p class="section-subtitle">أرسل رسالتك وسأرد عليك في أقرب وقت</p>
             </div>
             
             <div class="contact-grid">
                 <div class="contact-info">
                     <?php if (!empty($personal) && !empty($personal['email'])): ?>
-                    <div class="contact-item">
+                    <div class="contact-item reveal">
                         <div class="contact-icon"><?php echo getIcon('envelope'); ?></div>
                         <div class="contact-text">
                             <h5>البريد الإلكتروني</h5>
@@ -476,7 +573,7 @@ require_once 'includes/header.php';
                     <?php endif; ?>
                     
                     <?php if (!empty($personal) && !empty($personal['phone'])): ?>
-                    <div class="contact-item">
+                    <div class="contact-item reveal">
                         <div class="contact-icon"><?php echo getIcon('phone'); ?></div>
                         <div class="contact-text">
                             <h5>الهاتف</h5>
@@ -486,7 +583,7 @@ require_once 'includes/header.php';
                     <?php endif; ?>
                     
                     <?php if (!empty($personal) && !empty($personal['location'])): ?>
-                    <div class="contact-item">
+                    <div class="contact-item reveal">
                         <div class="contact-icon"><?php echo getIcon('location'); ?></div>
                         <div class="contact-text">
                             <h5>الموقع</h5>
@@ -496,10 +593,10 @@ require_once 'includes/header.php';
                     <?php endif; ?>
                     
                     <?php if (!empty($personal) && !empty($personal['linkedin'])): ?>
-                    <div class="contact-item">
+                    <div class="contact-item reveal">
                         <div class="contact-icon"><?php echo getIcon('linkedin'); ?></div>
                         <div class="contact-text">
-                            <h5>LinkedIn</h5>
+                            <h5>لينكد إن</h5>
                             <p><a href="<?php echo clean($personal['linkedin']); ?>" 
            target="_blank" 
            rel="noopener noreferrer"
@@ -511,10 +608,10 @@ require_once 'includes/header.php';
                     <?php endif; ?>
                     
                     <?php if (!empty($personal) && !empty($personal['github'])): ?>
-                    <div class="contact-item">
+                    <div class="contact-item reveal">
                         <div class="contact-icon"><?php echo getIcon('github'); ?></div>
                         <div class="contact-text">
-    <h5>GitHub</h5>
+    <h5>جيت هاب</h5>
     <p>
         <a href="<?php echo clean($personal['github']); ?>" 
            target="_blank" 
@@ -528,7 +625,21 @@ require_once 'includes/header.php';
                     <?php endif; ?>
                 </div>
 
-                <form class="contact-form" method="POST" action="">
+                <form class="contact-form reveal" method="POST" action="">
+                    <div class="ticket-head">
+                        <span class="tk-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="12" y1="18" x2="12" y2="12"/>
+                                <line x1="9" y1="15" x2="15" y2="15"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <span class="tk-title">أرسل لي رسالة</span>
+                            <span class="tk-sub">يسعدني سماع رأيك أو التعاون معك</span>
+                        </div>
+                    </div>
                     <?php if ($messageSent): ?>
                     <div class="alert alert-success">
                         شكراً لتواصلك معي! سأقوم بالرد عليك في أقرب وقت ممكن.
@@ -559,7 +670,7 @@ require_once 'includes/header.php';
                         <label class="form-label" for="message">الرسالة</label>
                         <textarea id="message" name="message" class="form-textarea" placeholder="اكتب رسالتك هنا..." required></textarea>
                     </div>
-                    <button type="submit" name="contact_submit" class="btn btn-primary" style="width: 100%;">
+                    <button type="submit" name="contact_submit" class="btn btn-primary contact-submit-btn" style="width: 100%;">
                         إرسال الرسالة
                     </button>
                 </form>
@@ -570,15 +681,17 @@ require_once 'includes/header.php';
     <!-- Comments Section -->
     <section class="section" id="comments">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-tag">آراء الزوار</span>
-                <h2 class="section-title">التعليقات</h2>
+            <div class="section-header reveal">
+                <div class="section-head-row">
+                    <span class="section-num" aria-hidden="true">07</span>
+                    <h2 class="section-title">التعليقات</h2>
+                </div>
                 <p class="section-subtitle">شاركنا رأيك وأترك انطباعك</p>
             </div>
             
             <div class="comments-wrapper">
                 <!-- نموذج إضافة تعليق -->
-                <div class="comment-form-card">
+                <div class="comment-form-card reveal">
                     <h3>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-left: 0.5rem;">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -635,7 +748,7 @@ require_once 'includes/header.php';
                 </div>
                 
                 <!-- عرض التعليقات -->
-                <div class="comments-list">
+                <div class="comments-list reveal">
                     <div class="comments-header">
                         <h3>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-left: 0.5rem;">

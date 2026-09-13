@@ -30,6 +30,7 @@ $initials = mb_substr($initials, 0, 2);
 <footer class="footer">
 <div class="footer-content">
 <div class="footer-logo"><?php echo htmlspecialchars($initials ?: 'MB'); ?></div>
+    <p class="footer-tagline">مطور برمجيات في أوراكل وفلاتر، مهتم بأمن المعلومات</p>
 <div class="footer-social">
 <?php if (!empty($personal) && !empty($personal['github'])): ?>
 <a href="https://<?php echo htmlspecialchars($personal['github']); ?>" class="social-link" target="_blank" aria-label="GitHub">
@@ -64,7 +65,7 @@ $initials = mb_substr($initials, 0, 2);
 <?php endif; ?>
 </div>
 <p class="footer-text">
-جميع الحقوق محفوظة © <?php echo htmlspecialchars($settings['footer_copyright_year'] ?? date('Y')); ?> |
+جميع الحقوق محفوظة © <?php echo htmlspecialchars(date('Y')); ?> |
 تصميم وتطوير بواسطة <a href="#"><?php echo htmlspecialchars($settings['footer_developer_name'] ?? 'MB'); ?></a>
 </p>
 </div>
@@ -177,6 +178,114 @@ block: 'start'
 }
 }, 500);
 }
+</script>
+<!-- Mobile Menu -->
+<script>
+(function() {
+const toggle = document.getElementById('navToggle');
+const links = document.getElementById('navLinks');
+const scrim = document.getElementById('navScrim');
+
+function setOpen(open) {
+if (!links) return;
+links.classList.toggle('open', open);
+document.body.classList.toggle('menu-open', open);
+if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+if (toggle) {
+toggle.addEventListener('click', function() {
+setOpen(!links.classList.contains('open'));
+});
+}
+if (scrim) {
+scrim.addEventListener('click', function() {
+setOpen(false);
+});
+}
+if (links) {
+links.querySelectorAll('a').forEach(function(a) {
+a.addEventListener('click', function() {
+setOpen(false);
+});
+});
+}
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') setOpen(false);
+});
+})();
+</script>
+<!-- Reveal on Scroll + Progress Bars -->
+<script>
+function initReveal() {
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reveals = document.querySelectorAll('.reveal');
+
+if (!('IntersectionObserver' in window) || reduced) {
+reveals.forEach(function(el) { el.classList.add('in-view'); });
+return;
+}
+
+document.querySelectorAll('.skill-progress-fill').forEach(function(fill) {
+fill.dataset.w = fill.style.width || '';
+fill.style.width = '0%';
+});
+
+const io = new IntersectionObserver(function(entries) {
+entries.forEach(function(entry) {
+if (entry.isIntersecting) {
+var el = entry.target;
+el.classList.add('in-view');
+el.querySelectorAll('.skill-progress-fill').forEach(function(fill) {
+fill.style.width = fill.dataset.w;
+});
+/* Release the reveal state so hover transforms (lift) can apply afterwards */
+el.addEventListener('transitionend', function handler(ev) {
+if (ev.propertyName === 'opacity') {
+el.removeEventListener('transitionend', handler);
+el.classList.remove('reveal');
+}
+});
+io.unobserve(el);
+}
+});
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+reveals.forEach(function(el) { io.observe(el); });
+}
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', initReveal);
+} else {
+initReveal();
+}
+</script>
+<!-- Project Filters -->
+<script>
+(function() {
+// Filter project cards by category
+const tabs = document.querySelectorAll('.filter-tab');
+const cards = document.querySelectorAll('.project-card');
+if (tabs.length && cards.length) {
+tabs.forEach(function(tab) {
+tab.addEventListener('click', function() {
+const filter = tab.getAttribute('data-filter');
+tabs.forEach(function(t) {
+t.classList.toggle('active', t === tab);
+});
+cards.forEach(function(card) {
+const cat = card.getAttribute('data-category') || '';
+const show = filter === 'all' || cat === filter;
+card.classList.toggle('filter-hide', !show);
+if (show) {
+card.classList.remove('tab-in');
+void card.offsetWidth;
+card.classList.add('tab-in');
+}
+});
+});
+});
+}
+})();
 </script>
 </body>
 </html>
